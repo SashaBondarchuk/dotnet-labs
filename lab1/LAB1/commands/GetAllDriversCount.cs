@@ -15,5 +15,10 @@ namespace LAB1.commands
         {
             Console.WriteLine($"Загальна кількість власників і шоферів: {dataHandler.GetAllDriversCount()}\n");
         }
+
+        public string GetCommandName()
+        {
+            return "Загальна кількість шоферів та водіїв";
+        }
     }
 }

@@ -3,5 +3,6 @@
     internal interface ICommand
     {
         void Execute();
+        string GetCommandName();
     }
 }

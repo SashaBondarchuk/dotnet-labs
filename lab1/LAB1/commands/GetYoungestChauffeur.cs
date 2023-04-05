@@ -16,5 +16,10 @@ namespace LAB1.commands
             var youngest = dataHandler.GetYoungestChauffeur();
             Console.WriteLine($"Наймолодший {youngest}, йому {DateTime.Now.Year - youngest.BirthDate.Year} років\n");
         }
+
+        public string GetCommandName()
+        {
+            return "Показати наймолодшого шофера";
+        }
     }
 }

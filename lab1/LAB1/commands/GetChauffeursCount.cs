@@ -16,24 +16,26 @@ namespace LAB1.commands
             Console.WriteLine("Введіть ID реєстрації машини:");
             while (true)
             {
-                try
+                bool flag = int.TryParse(Console.ReadLine(), out int regID);
+                if (!flag)
                 {
-                    int regID = int.Parse(Console.ReadLine());
-
-                    if (regID <= 0)
-                    {
-                        throw new Exception();
-                    }
-                    int count = dataHandler.GetChauffeursCount(regID);
-
-                    Console.WriteLine($"Кількість водіїв на реєстрацію #{regID} - {count}.\n");
-                    break;
+                    Console.WriteLine("Введіть число");
+                    continue;
                 }
-                catch (Exception)
+                if (regID <= 0)
                 {
-                    Console.WriteLine("ID має бути цифрою(числом), більше за 0.");
+                    Console.WriteLine("ID має бути більше за 0.");
+                    continue;
                 }
+                int count = dataHandler.GetChauffeursCount(regID);
+                Console.WriteLine($"Кількість водіїв на реєстрацію #{regID} - {count}.\n");
+                break;
             }
+        }
+
+        public string GetCommandName()
+        {
+            return "Отримати кількість шоферів на конкретну реєстрацію авто";
         }
     }
 }

@@ -6,21 +6,25 @@ namespace LAB1
     class Invoker
     {
         private List<ICommand> commands = new List<ICommand>();
-        public Invoker() {}
+        public List<ICommand> GetCommands() 
+        { 
+            return commands; 
+        }
         public int GetCommandsCount()
         {
             return commands.Count;
         }
         public void SetUpCommand(ICommand command)
-        {
-            if(command is ICommand)
-            {
-                commands.Add(command);
-            }
+        { 
+            commands.Add(command);
         }
         public void ExecuteCommand(int commandNumber)
         {
             commands[commandNumber].Execute();
+        }
+        public string GetCommandName(int commandNumber)
+        {
+            return commands[commandNumber].GetCommandName();
         }
     }
 }

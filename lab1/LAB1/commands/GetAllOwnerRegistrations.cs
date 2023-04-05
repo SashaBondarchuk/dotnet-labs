@@ -1,4 +1,5 @@
-﻿using LAB1.interfaces;
+﻿using LAB1.classes;
+using LAB1.interfaces;
 using System;
 using System.Linq;
 
@@ -17,34 +18,37 @@ namespace LAB1.commands
             Console.WriteLine("Введіть ID власника:");
             while (true)
             {
-                try
+                bool flag = int.TryParse(Console.ReadLine(), out int ownerID);
+                if (!flag)
                 {
-                    int ownerID = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Введіть число");
+                    continue;
+                }
+                if (ownerID <= 0)
+                {
+                    Console.WriteLine("ID має бути більше за 0.");
+                    continue;
+                }
 
-                    if (ownerID <= 0)
-                    {
-                        throw new Exception();
-                    }
+                var registrations = dataHandler.GetAllOwnerRegistrations(ownerID);
 
-                    var registrations = dataHandler.GetAllOwnerRegistrations(ownerID);
-
-                    if (registrations.Count() <= 0)
-                    {
-                        Console.WriteLine("Власника з таким ID не існує");
-                        break; 
-                    }
-                    foreach (var reg in registrations)
-                    {
-                        Console.WriteLine($"{reg.VinId} {reg}");
-                    }
-                    Console.WriteLine();
+                if (registrations.Count() <= 0)
+                {
+                    Console.WriteLine("Власника з таким ID не існує\n");
                     break;
                 }
-                catch (Exception)
+                foreach (var reg in registrations)
                 {
-                    Console.WriteLine("ID має бути цифрою(числом), більше за 0.");
+                    Console.WriteLine($"{reg.VinId} {reg}");
                 }
+                Console.WriteLine();
+                break;
             }
+        }
+
+        public string GetCommandName()
+        {
+            return "Показати всі реєстрації власника по Id";
         }
     }
 }

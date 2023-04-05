@@ -1,37 +1,27 @@
-﻿using System;
+﻿using LAB1.interfaces;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace LAB1
 {
     class CommandMenu
     {
-        public static void LoadMenu() 
+        private static List<string> _commands = new List<string>();
+        public static void GenerateMenu(List<ICommand> commands) 
         {
-            Console.WriteLine(
-                "1. Список усіх машин\n" +
-                "2. Показати машити типу купе\n" +
-                "3. Показати тільки зареєстровані машини\n" +
-                "4. Загальна кількість шоферів та водіїв\n" +
-                "5. Показати шоферів, прізвище яких починається на задані літери\n" +
-                "6. Показати всі реєстрації власника по Id\n" +
-                "7. Посортувати шоферів по прізвищу\n" +
-                "8. Вибрати власників, у яких більше X реєстрацій\n" +
-                "9. Показати наймолодшого шофера\n" +
-                "10. Показати прізвища шоферів в Uppercase\n" +
-                "11. Отримати кількість шоферів на конкретну реєстрацію авто\n" +
-                "12. Вивести власників, поки рік народження менший заданого\n" +
-                "13. Незареєстровані машини\n" +
-                "14. Вивести власників, пропустивши перші n людей\n" +
-                "15. Згрупувати машини по виробнику\n" +
-                "16. Чи всім власниками більше 21 року?\n" +
-                "17. Середній рік народження шоферів\n" +
-                "18. Отримати список і власників і шоферів\n" +
-                "19. Вивести останню реєстрацію авто\n" +
-                "20. Показати унікальні водійські посвідчення\n"
-                );
+            foreach (var command in commands)
+            {
+                _commands.Add(command.GetCommandName());
+            }
+        }
+        public static void PrintMenu()
+        {
+            for (int index = 0; index < _commands.Count; index++)
+            {
+                Console.WriteLine($"{index + 1}. {_commands[index]}");
+            }
+            Console.WriteLine();
         }
     }
 }

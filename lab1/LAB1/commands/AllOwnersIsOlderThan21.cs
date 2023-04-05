@@ -15,5 +15,9 @@ namespace LAB1.commands
         {
             Console.WriteLine(dataHandler.AllOwnersIsOlderThan21().ToString() + "\n");
         }
+        public string GetCommandName()
+        {
+            return "Чи всім власниками більше 21 року?";
+        }
     }
 }

@@ -43,5 +43,10 @@ namespace LAB1.commands
                 break;
             }
         }
+
+        public string GetCommandName()
+        {
+            return "Показати шоферів, прізвище яких починається на задані літери";
+        }
     }
 }

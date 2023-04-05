@@ -15,5 +15,10 @@ namespace LAB1.commands
         {
             Console.WriteLine(dataHandler.GetLastRegistratedVehicle() + "\n");
         }
+
+        public string GetCommandName()
+        {
+            return "Вивести останню реєстрацію авто";
+        }
     }
 }

@@ -5,10 +5,10 @@ namespace LAB1
 {
     interface IDataProvider
     {
-        IEnumerable<Owner> Owners { get; }
-        IEnumerable<Chauffeur> Chauffeurs { get; }
-        IEnumerable<VehicleRegistration> VechileRegistrations { get; }
-        IEnumerable<ChauffeurRegistration> ChauffeurRegistrations { get; }
-        IEnumerable<Vechile> Vechiles { get; }
+        IEnumerable<Owner> Owners { get; set; }
+        IEnumerable<Chauffeur> Chauffeurs { get; set; }
+        IEnumerable<VehicleRegistration> VechileRegistrations { get; set; }
+        IEnumerable<ChauffeurRegistration> ChauffeurRegistrations { get; set; }
+        IEnumerable<Vechile> Vechiles { get; set; }
     }
 }

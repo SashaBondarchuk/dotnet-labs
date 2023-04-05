@@ -1,4 +1,5 @@
 ﻿using LAB1.classes;
+using LAB1.ClassesForLinq;
 using LAB1.enums;
 using LAB1.interfaces;
 using System;

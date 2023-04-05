@@ -23,5 +23,10 @@ namespace LAB1.commands
                 Console.WriteLine();
             }
         }
+
+        public string GetCommandName()
+        {
+            return "Згрупувати машини по виробнику";
+        }
     }
 }

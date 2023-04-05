@@ -17,35 +17,37 @@ namespace LAB1.commands
             Console.WriteLine("Введіть рік народження:");
             while (true)
             {
-                try
+                bool flag = int.TryParse(Console.ReadLine(), out int year);
+                if (!flag)
                 {
-                    int year = int.Parse(Console.ReadLine());
-
-                    if (year <= 1920 || year > (DateTime.Now.Year - 18))
-                    {
-                        throw new Exception();
-                    }
-
-                    var owners = dataHandler.TakeWhile(year);
-
-                    if (owners.Count() <= 0) 
-                    {
-                        Console.WriteLine("Таких власників немає\n");
-                        break;
-                    }
-
-                    foreach (var owner in owners)
-                    {
-                        Console.WriteLine($"{owner}, {owner.BirthDate.Year}");
-                    }
-                    Console.WriteLine();
-                    break;
+                    Console.WriteLine("Введіть число");
+                    continue;
                 }
-                catch (Exception)
+                if (year <= 1920 || year > (DateTime.Now.Year - 18))
                 {
                     Console.WriteLine($"Рік має бути числом, більше за 1920 і менше за {DateTime.Now.Year - 17}.");
+                    continue;
                 }
+
+                var owners = dataHandler.TakeWhile(year);
+
+                if (owners.Count() <= 0)
+                {
+                    Console.WriteLine("Таких власників немає\n");
+                    break;
+                }
+                foreach (var owner in owners)
+                {
+                    Console.WriteLine($"{owner}, {owner.BirthDate.Year}");
+                }
+                Console.WriteLine();
+                break;
             }
+        }
+
+        public string GetCommandName()
+        {
+            return "Вивести власників, поки рік народження менший заданого";
         }
     }
 }

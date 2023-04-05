@@ -22,5 +22,10 @@ namespace LAB1.commands
             }
             Console.WriteLine();
         }
+
+        public string GetCommandName()
+        {
+            return "Показати машити типу купе";
+        }
     }
 }

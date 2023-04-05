@@ -17,35 +17,37 @@ namespace LAB1.commands
             Console.WriteLine("Введіть кількість:");
             while (true)
             {
-                try
+                bool flag = int.TryParse(Console.ReadLine(), out int regCount);
+                if (!flag)
                 {
-                    int regCount = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Введіть число");
+                    continue;
+                }
+                if (regCount <= 0)
+                {
+                    Console.WriteLine("Число має бути більше за 0\n");
+                    continue;
+                }
 
-                    if (regCount <= 0)
-                    {
-                        throw new Exception();
-                    }
+                var owners = dataHandler.GetOwnersWithRegCountMoreThan(regCount);
 
-                    var owners = dataHandler.GetOwnersWithRegCountMoreThan(regCount);
-
-                    if (owners.Count() <= 0)
-                    {
-                        Console.WriteLine("Такого власника не існує\n");
-                        break;
-                    }
-
-                    foreach (var owner in owners)
-                    {
-                        Console.WriteLine($"{owner}");
-                    }
-                    Console.WriteLine();
+                if (owners.Count() <= 0)
+                {
+                    Console.WriteLine("Такого власника не існує\n");
                     break;
                 }
-                catch (Exception)
+                foreach (var owner in owners)
                 {
-                    Console.WriteLine("Кількість має бути цифрою(числом), більше за 0.");
+                    Console.WriteLine($"{owner}");
                 }
+                Console.WriteLine();
+                break;
             }
+        }
+
+        public string GetCommandName()
+        {
+            return "Вибрати власників, у яких більше X реєстрацій";
         }
     }
 }

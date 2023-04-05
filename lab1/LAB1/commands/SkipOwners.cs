@@ -18,34 +18,37 @@ namespace LAB1.commands
             Console.WriteLine("Введіть index:");
             while (true)
             {
-                try
+                bool flag = int.TryParse(Console.ReadLine(), out int index);
+                if (!flag)
                 {
-                    int index = int.Parse(Console.ReadLine());
-
-                    if (index < 1)
-                    {
-                        throw new Exception();
-                    }
-
-                    var skippedOwners = dataHandler.SkipOwners(index);
-
-                    if (skippedOwners.Count() == 0) 
-                    {
-                        Console.WriteLine("Введіть менше число");
-                        continue;
-                    }
-                    foreach (var owner in skippedOwners)
-                    {
-                        Console.WriteLine(owner);
-                    }
-                    Console.WriteLine();
-                    break;
+                    Console.WriteLine("Введіть число");
+                    continue;
                 }
-                catch (Exception)
+                if (index <= 0)
                 {
-                    Console.WriteLine($"Індекс має бути цифрою(числом) і більшою за 0.");
+                    Console.WriteLine("Число має бути більше за 0\n");
+                    continue;
                 }
+
+                var skippedOwners = dataHandler.SkipOwners(index);
+
+                if (skippedOwners.Count() == 0)
+                {
+                    Console.WriteLine("Введіть менше число");
+                    continue;
+                }
+                foreach (var owner in skippedOwners)
+                {
+                    Console.WriteLine(owner);
+                }
+                Console.WriteLine();
+                break;
             }
+        }
+
+        public string GetCommandName()
+        {
+            return "Вивести власників, пропустивши перші n людей";
         }
     }
 }
