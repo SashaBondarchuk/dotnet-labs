@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Owners>
+  <Owner>
+    <Id>1</Id>
+    <Name>Свястислав</Name>
+    <Surname>Шпак</Surname>
+    <MiddleName>Златович</MiddleName>
+    <Adress>Хмельницький, пл. М. Коцюбинського, 15</Adress>
+    <BirthDate>04.01.2001 0:00:00</BirthDate>
+    <DriverLicense>СВІ2402150</DriverLicense>
+  </Owner>
+  <Owner>
+    <Id>2</Id>
+    <Name>Йосеф</Name>
+    <Surname>Шепітько</Surname>
+    <MiddleName>Глібович</MiddleName>
+    <Adress>Запоріжжя, просп. Тараса Шевченка, 48</Adress>
+    <BirthDate>07.01.1995 0:00:00</BirthDate>
+    <DriverLicense>ЛЩД6337274</DriverLicense>
+  </Owner>
+  <Owner>
+    <Id>3</Id>
+    <Name>Микита</Name>
+    <Surname>Цебровський</Surname>
+    <MiddleName>Левович</MiddleName>
+    <Adress>Миколаїв, пров. Інститутська, 09</Adress>
+    <BirthDate>08.11.2000 0:00:00</BirthDate>
+    <DriverLicense>ГГО9221609</DriverLicense>
+  </Owner>
+  <Owner>
+    <Id>4</Id>
+    <Name>Назар</Name>
+    <Surname>Старченко</Surname>
+    <MiddleName>Яромирович</MiddleName>
+    <Adress>Ужгород, вул. Лук’янівська, 61</Adress>
+    <BirthDate>15.11.2004 0:00:00</BirthDate>
+    <DriverLicense>РПІ9032227</DriverLicense>
+  </Owner>
+</Owners>
