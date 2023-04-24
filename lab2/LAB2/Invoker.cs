@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LAB2.interfaces;
 
 namespace LAB2
 {
     class Invoker
     {
-        private List<ICommand> commands = new List<ICommand>();
+        private readonly List<ICommand> commands = new List<ICommand>();
         public List<ICommand> GetCommands()
         {
             return commands;

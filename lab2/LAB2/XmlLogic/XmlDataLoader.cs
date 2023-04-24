@@ -1,6 +1,8 @@
-﻿using System;
+﻿using LAB2.enums;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -9,81 +11,67 @@ namespace LAB2
 {
     static class XmlDataLoader 
     {
-        private static Type instanceType;
-        private static string path; 
-        public static List<T> DefaultDeserialize<T>()
+        private static string path;
+        public static List<T> LoadData<T>(SerializeType serializeType) where T : new()
         {
-            instanceType = typeof(T);
-            path = $"../../XML/{instanceType.Name}s.xml";
-            //if (!File.Exists(path))
-            //    throw new FileNotFoundException(); ??
+            path = XmlFilePathCreator.GetPath<T>(serializeType);
+            if (!File.Exists(path)) 
+            {
+                throw new FileNotFoundException($"Файлу за шляхом {path} не знайдено");
+            }
+            switch (serializeType)
+            {
+                case SerializeType.DefaultXmlSerializer:
+                    return DefaultDeserialize<T>(path);
+                case SerializeType.XmlWriter:
+                    return XmlDocumentDeserialize<T>(path);
+                default:
+                    return null;
+            }
+        }
+        private static List<T> DefaultDeserialize<T>(string path)
+        {
             var xmlSerializer = new XmlSerializer(typeof(List<T>));
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate)) 
+            using (FileStream fs = new FileStream(path, FileMode.Open)) 
             {
                 return (List<T>)xmlSerializer.Deserialize(fs);
             }
         }
-        public static List<T> XmlDocumentDeserialize<T>() where T : new()
+        private static List<T> XmlDocumentDeserialize<T>(string path) where T : new()
         {
-            instanceType = typeof(T);
-            path = $"../../XML/__{instanceType.Name}s.xml"; //change
-            //if (!File.Exists(path))
-            //    throw new FileNotFoundException(); ??
-
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(path);
-            XmlElement rootEl = xmlDocument.DocumentElement;
+            XmlElement root = xmlDocument.DocumentElement;
             List<T> instanceList = new List<T>();
 
-            foreach (XmlNode xNode in rootEl)
+            foreach (XmlNode instanceNode in root)
             {
-                T instance = new T();
-                instance = GetChildNodes(instance, xNode);
+                T instance = FillInstanceProps<T>(instanceNode);
                 instanceList.Add(instance);
             }
             return instanceList;
         }
-        public static List<T> XmlDocumentDeserialize<T>(string fileName) where T : new()
+        private static T FillInstanceProps<T>(XmlNode instanceNode) where T : new()
         {
-            path = $"../../XML/{fileName}.xml";
-            var xmlDocument = new XmlDocument();
-            xmlDocument.Load(path);
-            XmlElement rootEl = xmlDocument?.DocumentElement;
-            if (rootEl == null)
-                throw new FileNotFoundException();
+            Type instanceType = typeof(T);
+            PropertyInfo property;
+            T instance = new T();
 
-            List<T> instanceList = new List<T>();
-
-            foreach (XmlNode xNode in rootEl)
+            foreach (XmlNode xmlPropTag in instanceNode)
             {
-                T instance = new T();
-                instance = GetChildNodes(instance, xNode);
-                instanceList.Add(instance);
-            }
-
-            return instanceList;
-        }
-        private static T GetChildNodes<T>(T instance, XmlNode xNode)
-        {
-            instanceType = typeof(T);
-            foreach (XmlNode childNode in xNode.ChildNodes)
-            {
-                var property = instanceType.GetProperty(childNode.Name);
-                if (property != null)
-                {                   
-                    object value = property.PropertyType.IsEnum
-                        ? Enum.Parse(property.PropertyType, childNode.InnerText, true)
-                        : Convert.ChangeType(childNode.InnerText, property.PropertyType);
-                    property.SetValue(instance, value);
-                }
+                property = instanceType.GetProperty(xmlPropTag.Name);
+                object value = ConvertHelper.ChangeType(property?.PropertyType, xmlPropTag.InnerText);
+                property?.SetValue(instance, value);
             }
             return instance;
         }
-        public static XDocument LoadDocument(string fileName) 
+        public static XDocument LoadDocument(string fileName, string directory) 
         {
-            path = $"../../XML/{fileName.ToLower()}.xml";
-            if (!File.Exists(path))
-                return null;
+            path = XmlFilePathCreator.GetPath(directory, fileName);
+            if (!File.Exists(path)) 
+            {
+                throw new FileNotFoundException($"Файлу {fileName} не знайдено, створіть або завантажте файл з такою назвою");
+            }
             return XDocument.Load(path);
         }
     }

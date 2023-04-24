@@ -1,7 +1,4 @@
-﻿using System;
-using System.Xml.Serialization;
-
-namespace LAB2.classes
+﻿namespace LAB2.classes
 {
     public class Owner : Driver
     {

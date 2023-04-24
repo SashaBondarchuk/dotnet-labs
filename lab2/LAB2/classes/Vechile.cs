@@ -1,6 +1,7 @@
 ﻿using System;
 using LAB2.enums;
 
+
 namespace LAB2.classes
 {
     public class Vechile

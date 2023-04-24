@@ -16,7 +16,10 @@ namespace LAB2.commands
         public void Execute()
         {
             if (!dataHandler.DocumentIsInitialized())
-                throw new FileNotFoundException();
+            {
+                throw new Exception("Файл не ініціалізований даними за вказаною схемою");
+            }
+                
             Brand brand;
             while (true)
             {

@@ -8,7 +8,7 @@ namespace LAB2.enums
 {
     enum SerializeType
     {
-        DefaultXmlSerializer,
-        XmlWriter,
+        DefaultXmlSerializer = 1,
+        XmlWriter = 2,
     }
 }

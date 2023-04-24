@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using LAB2.interfaces;
 
 
@@ -15,7 +14,9 @@ namespace LAB2.commands
         public void Execute()
         {
             if (!dataHandler.DocumentIsInitialized())
-                throw new FileNotFoundException();
+            {
+                throw new Exception("Файл не ініціалізований даними за вказаною схемою");
+            }
             Console.WriteLine(dataHandler.GetYearOfOldestCar());
         }
 

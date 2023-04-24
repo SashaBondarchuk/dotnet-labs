@@ -1,7 +1,6 @@
 ﻿using LAB2.enums;
 using LAB2.interfaces;
 using System;
-using System.IO;
 
 
 namespace LAB2.commands
@@ -16,7 +15,9 @@ namespace LAB2.commands
         public void Execute()
         {
             if (!dataHandler.DocumentIsInitialized())
-                throw new FileNotFoundException();
+            {
+                throw new Exception("Файл не ініціалізований даними за вказаною схемою");
+            }
             Console.Write("Vin: ");
             string vin = Console.ReadLine();
             Console.Write("Color: ");

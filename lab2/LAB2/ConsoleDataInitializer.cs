@@ -25,24 +25,30 @@ namespace LAB2
             for (int i = 0; i < instanceCount; i++)
             {
                 Console.WriteLine($"{typeof(T).Name} {i + 1}:");
-                T instance = CreateInstance<T>();
-                list.Add(instance);
+                list.Add(CreateInstance<T>());
             }
             return list;
         }
 
         static private T CreateInstance<T>() where T : new() 
         {
-            PropertyInfo[] publicProps = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo[] publicProps = typeof(T).GetProperties();
             T instance = new T();
             foreach (var prop in publicProps)
             {
-                Console.Write($"{prop.Name}:");
-
-                object value = prop.PropertyType.IsEnum
-                    ? Enum.Parse(prop.PropertyType, Console.ReadLine(), true)
-                    : Convert.ChangeType(Console.ReadLine(), prop.PropertyType);
-
+                object value = null;
+                while (value == null)
+                {
+                    Console.Write($"{prop.Name}:");
+                    try
+                    {
+                        value = ConvertHelper.ChangeType(prop.PropertyType, Console.ReadLine());
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine($"Неможливо конвертувати, введіть значення типу {prop.PropertyType.Name}");
+                    }
+                }                
                 prop.SetValue(instance, value);
             }
             return instance;

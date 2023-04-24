@@ -1,0 +1,18 @@
+﻿<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="ChauffeurRegistrations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ChauffeurRegistration" maxOccurs="unbounded" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:int" name="Id"/>
+							<xs:element type="xs:int" name="VechileRegistrationID"/>
+							<xs:element type="xs:int" name="ChauffeurID"/>
+							<xs:element type="xs:dateTime" name="Date"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

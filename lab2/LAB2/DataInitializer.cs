@@ -1,46 +1,50 @@
-﻿using LAB2.classes;
+﻿using System;
+using System.IO;
+using LAB2.classes;
 using LAB2.enums;
 using LAB2.interfaces;
 
 
 namespace LAB2
 {
-    static class DataInitializer
+    class DataInitializer
     {
-        private static IDataProvider dataProvider;
-        public static void Initialize(InitializeType initializeType, IDataProvider DataProvider)
+        private readonly IDataProvider dataProvider;
+        public DataInitializer(IDataProvider dataProvider)
         {
-            dataProvider = DataProvider;
+            this.dataProvider = dataProvider;
+        }
+        public void Initialize(InitializeType initializeType)
+        {
             switch (initializeType)
             {
                 case InitializeType.XmlFileComplex:
-                    ComplexInitializeFromXml();
+                    InitializeFromXml(SerializeType.XmlWriter);
                     break;
                 case InitializeType.XmlFileDefault:
-                    DefaultInitializeFromXml();
+                    InitializeFromXml(SerializeType.DefaultXmlSerializer);
                     break;
                 case InitializeType.Console:
                     InitializeFromConsole();
                     break;
             }
         }
-        private static void DefaultInitializeFromXml()
+        private void InitializeFromXml(SerializeType serializeType)
         {
-            dataProvider.Owners = XmlDataLoader.DefaultDeserialize<Owner>();
-            dataProvider.Chauffeurs = XmlDataLoader.DefaultDeserialize<Chauffeur>();
-            dataProvider.Vechiles = XmlDataLoader.DefaultDeserialize<Vechile>();
-            dataProvider.VechileRegistrations = XmlDataLoader.DefaultDeserialize<VehicleRegistration>();
-            dataProvider.ChauffeurRegistrations = XmlDataLoader.DefaultDeserialize<ChauffeurRegistration>();
+            try
+            {
+                dataProvider.Owners = XmlDataLoader.LoadData<Owner>(serializeType);
+                dataProvider.Chauffeurs = XmlDataLoader.LoadData<Chauffeur>(serializeType);
+                dataProvider.Vechiles = XmlDataLoader.LoadData<Vechile>(serializeType);
+                dataProvider.VechileRegistrations = XmlDataLoader.LoadData<VehicleRegistration>(serializeType);
+                dataProvider.ChauffeurRegistrations = XmlDataLoader.LoadData<ChauffeurRegistration>(serializeType);
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
-        private static void ComplexInitializeFromXml()
-        {
-            dataProvider.Owners = XmlDataLoader.XmlDocumentDeserialize<Owner>();
-            dataProvider.Chauffeurs = XmlDataLoader.XmlDocumentDeserialize<Chauffeur>();
-            dataProvider.Vechiles = XmlDataLoader.XmlDocumentDeserialize<Vechile>();
-            dataProvider.VechileRegistrations = XmlDataLoader.XmlDocumentDeserialize<VehicleRegistration>();
-            dataProvider.ChauffeurRegistrations = XmlDataLoader.XmlDocumentDeserialize<ChauffeurRegistration>();
-        }
-        private static void InitializeFromConsole()
+        private void InitializeFromConsole()
         {
             dataProvider.Owners = ConsoleDataInitializer.CreateCollection<Owner>();
             dataProvider.Chauffeurs = ConsoleDataInitializer.CreateCollection<Chauffeur>();

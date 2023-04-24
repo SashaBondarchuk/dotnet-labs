@@ -1,6 +1,7 @@
 ﻿using LAB2.classes;
 using LAB2.enums;
 using LAB2.interfaces;
+using LAB2.XmlLogic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,89 +13,115 @@ namespace LAB2
     class DataHandler : IDataHandler
     {
         private readonly IDataProvider dataProvider;
-        private XDocument VehicleDocument = XmlDataLoader.LoadDocument("Vechiles");
+        private XDocument VehicleDocument;
         public DataHandler(IDataProvider dataProvider)
         {
             this.dataProvider = dataProvider;
+            try
+            {
+                ValidateXmlFiles();
+                InitializeXDocument();
+            }
+            catch (Exception) {}
         }
         public bool DocumentIsInitialized()
         {
-            if (VehicleDocument == null)
+            return VehicleDocument != null;
+        }
+        public void ValidateXmlFiles() 
+        {
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string[] xmlFiles = Directory.GetFiles($"{currentDirectory}/XML_FILES");
+            if(xmlFiles.Count() == 0)
             {
-                return false;
+                return;
             }
-            return true;
+            foreach (string xmlFile in xmlFiles)
+            {
+                XmlValidator.Validate(xmlFile);
+            }
         }
         public void WriteDataToXml(int option)
         {
-            DataInitializer.Initialize(InitializeType.Console, dataProvider);
+            DataInitializer dataInitializer = new DataInitializer(dataProvider); 
+            dataInitializer.Initialize(InitializeType.Console);
 
-            if (option == 1)
+            SerializeType serializeType = (SerializeType)option;
+            switch (serializeType)
             {
-                XmlSerialiser.SerializeCollection(SerializeType.DefaultXmlSerializer, dataProvider.Owners);
-                XmlSerialiser.SerializeCollection(SerializeType.DefaultXmlSerializer, dataProvider.Chauffeurs);
-                XmlSerialiser.SerializeCollection(SerializeType.DefaultXmlSerializer, dataProvider.Vechiles);
-                XmlSerialiser.SerializeCollection(SerializeType.DefaultXmlSerializer, dataProvider.VechileRegistrations);
-                XmlSerialiser.SerializeCollection(SerializeType.DefaultXmlSerializer, dataProvider.ChauffeurRegistrations);
+                case SerializeType.DefaultXmlSerializer:
+                    SerializeCollections(serializeType);
+                    break;
+                case SerializeType.XmlWriter:
+                    SerializeCollections(serializeType);
+                    break;
             }
-            else
+            InitializeXDocument();
+        }
+        private void InitializeXDocument()
+        {
+            try
             {
-                XmlSerialiser.SerializeCollection(SerializeType.XmlWriter, dataProvider.Owners);
-                XmlSerialiser.SerializeCollection(SerializeType.XmlWriter, dataProvider.Chauffeurs);
-                XmlSerialiser.SerializeCollection(SerializeType.XmlWriter, dataProvider.Vechiles);
-                XmlSerialiser.SerializeCollection(SerializeType.XmlWriter, dataProvider.VechileRegistrations);
-                XmlSerialiser.SerializeCollection(SerializeType.XmlWriter, dataProvider.ChauffeurRegistrations);
+                VehicleDocument = XmlDataLoader.LoadDocument("Vechiles", XmlFilePathCreator.DirectoryName);
             }
-            VehicleDocument = XmlDataLoader.LoadDocument("Vechiles");
-        } 
-        public string GetFileContent(string fileName)
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+                VehicleDocument = null;
+            }
+        }
+        private void SerializeCollections(SerializeType serializeType)
         {
-            var xDocument = XmlDataLoader.LoadDocument(fileName);
-            if(xDocument != null) 
-                return xDocument.ToString();
-            return "Файлу не існує.";
-        } 
-        public IEnumerable<string> GetXmlFileNames()
-        {
-            return Directory.EnumerateFiles("../../XML/");
+            XmlSerialiser.SerializeCollection(serializeType, dataProvider.Owners);
+            XmlSerialiser.SerializeCollection(serializeType, dataProvider.Chauffeurs);
+            XmlSerialiser.SerializeCollection(serializeType, dataProvider.Vechiles);
+            XmlSerialiser.SerializeCollection(serializeType, dataProvider.VechileRegistrations);
+            XmlSerialiser.SerializeCollection(serializeType, dataProvider.ChauffeurRegistrations);
         }
         public IEnumerable<XElement> GetVehicles()
         {
-            return VehicleDocument?.Root.Elements();
+            return VehicleDocument.GetRootElements();
         }
         public IEnumerable<XElement> GetSelectedDescendants()
         {
-            return VehicleDocument?.Root.Descendants("Model");
+            return VehicleDocument.GetRootElements().Descendants("Model");
         }
         public IEnumerable<string> GetBrandsAndSort()
         {
-            return VehicleDocument?.Descendants("Vechile")
+            return VehicleDocument.GetRootElements()
                 .Select(node => node.Element("Brand").Value)
                 .OrderBy(node => node);
         }
         public string GetElementWithSelectedText(string text)
         {
-            var result = from node in VehicleDocument?.Root.Elements("Vechile")
+            var result = from node in VehicleDocument.GetRootElements()
                          where node.Element("LicensePlate").Value == text
                          select node;
             if(result.Count() == 0)
                 return "Такої машини не знайдено";
             return result.First().ToString();
         }
-        public IEnumerable<Vechile> GetVehiclesWithLinq(string fileName)
+        public IEnumerable<Vechile> GetVehiclesWithLinq()
         {
-            var vechiles = XmlDataLoader.XmlDocumentDeserialize<Vechile>(fileName);
+            var vechiles = XmlDataLoader.LoadData<Vechile>(SerializeType.XmlWriter);
             return vechiles;
         }
-        public IEnumerable<XElement> XmlNodeDelete()
+        public void XmlNodeDelete()
         {
-            var vehiclesDoc = XmlDataLoader.LoadDocument("Vechiles");
-            vehiclesDoc?.Root.Elements("Vechile").Elements("Color").Remove();
-            return vehiclesDoc.Root.Elements("Vechile");
+            XDocument vehiclesDoc;
+            try
+            {
+                vehiclesDoc = XmlDataLoader.LoadDocument("Vechiles", XmlFilePathCreator.DirectoryName);
+                vehiclesDoc.GetRootElements().Elements("Color").Remove();
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
         public IEnumerable<IGrouping<Manufacturer, Vechile>> GroupByManufacturer()
         {
-            return VehicleDocument?.Descendants("Vechile").Select(v =>
+            return VehicleDocument.GetRootElements().Select(v =>
                 new Vechile
                 {
                     Vin = v.Element("Vin").Value,
@@ -110,47 +137,47 @@ namespace LAB2
         }
         public IEnumerable<XElement> GetNewVehicles()
         {
-            return from v in VehicleDocument?.Root.Descendants("Vechile")
+            return from v in VehicleDocument.GetRootElements()
                 where (TechCondition)Enum.Parse(typeof(TechCondition), v.Element("TechCondition").Value) == TechCondition.FactoryNew
                 select v;
         }
         public bool AllVechilesIsSedan(BodyType body)
         {
-            return (bool)VehicleDocument?.Root?.Descendants("Vechile")
+            return VehicleDocument.GetRootElements()
                 .All(v => (BodyType)Enum.Parse(typeof(BodyType), v.Element("BodyType").Value) == body);
         }
         public IEnumerable<XElement> GetVechilesTillSelectedYear(int year)
         {
-            return VehicleDocument?.Root.Elements("Vechile")
+            return VehicleDocument.GetRootElements()
                 .Where(v => year > DateTime.Parse(v.Element("RealeseDate").Value).Year);
         }
         public XElement ChangeColorByVin(string vin, CarColor carColor)
         {
-            var vechile = VehicleDocument?.Root.Elements("Vechile")
+            var vechile = VehicleDocument.GetRootElements()
                 .Where(v => v.Element("Vin").Value == vin).First();
             vechile.Element("Color").Value = carColor.ToString();
             return vechile;
         }
         public int GetYearOfOldestCar()
         {
-            var year = VehicleDocument?.Root.Elements("Vechile")
+            var year = VehicleDocument.GetRootElements()
                 .Min(v => DateTime.Parse(v.Element("RealeseDate").Value).Year);
-            return (int)year;
+            return year;
         }
         public int GetCountOfSelectedBrand(Brand brand)
         {
-            return (int)VehicleDocument?.Root.Elements("Vechile")
+            return VehicleDocument.GetRootElements()
                 .Where(v => v.Element("Brand").Value == brand.ToString())
                 .Count();
         }
         public IEnumerable<XElement> GetSelectedVechilesByPlate (string symbols)
         {
-            return VehicleDocument?.Root.Elements("Vechile")
+            return VehicleDocument.GetRootElements()
                 .Where(v => v.Element("LicensePlate").Value.StartsWith(symbols));
         }
         public IEnumerable<XElement> TakeWhile(int year)
         {
-            return VehicleDocument?.Root.Elements("Vechile")
+            return VehicleDocument.GetRootElements()
                 .TakeWhile(v => DateTime.Parse(v.Element("RealeseDate").Value).Year < year);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using LAB2.interfaces;
 using System;
-using System.IO;
+
 
 namespace LAB2.commands
 {
@@ -14,18 +14,15 @@ namespace LAB2.commands
         public void Execute()
         {
             if (!dataHandler.DocumentIsInitialized())
-                throw new FileNotFoundException();
-
-            foreach (var vechile in dataHandler.XmlNodeDelete())
             {
-                Console.WriteLine(vechile);
+                throw new Exception("Файл не ініціалізований даними за вказаною схемою");
             }
-            Console.WriteLine();
+            dataHandler.XmlNodeDelete();
         }
 
         public string GetCommandName()
         {
-            return "Вивети документ з видаленим вузлом Color";
+            return "Видалити вузлол Color";
         }
     }
 }

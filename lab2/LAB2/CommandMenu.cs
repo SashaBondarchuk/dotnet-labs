@@ -4,7 +4,7 @@ using LAB2.interfaces;
 
 namespace LAB2
 {
-    class CommandMenu
+    static class CommandMenu
     {
         private static readonly List<string> _commands = new List<string>();
         public static void GenerateMenu(List<ICommand> commands)

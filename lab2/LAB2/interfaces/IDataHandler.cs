@@ -11,14 +11,13 @@ namespace LAB2.interfaces
     {
         bool DocumentIsInitialized();
         void WriteDataToXml(int option);
-        string GetFileContent(string fileName);
-        IEnumerable<string> GetXmlFileNames();
+        void ValidateXmlFiles();
         IEnumerable<XElement> GetVehicles();
         IEnumerable<XElement> GetSelectedDescendants();
         IEnumerable<string> GetBrandsAndSort();
         string GetElementWithSelectedText(string text);
-        IEnumerable<Vechile> GetVehiclesWithLinq(string fileName);
-        IEnumerable<XElement> XmlNodeDelete();
+        IEnumerable<Vechile> GetVehiclesWithLinq();
+        void XmlNodeDelete();
         IEnumerable<IGrouping<Manufacturer, Vechile>> GroupByManufacturer();
         IEnumerable<XElement> GetNewVehicles();
         bool AllVechilesIsSedan(BodyType body);

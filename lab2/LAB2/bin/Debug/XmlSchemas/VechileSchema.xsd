@@ -1,0 +1,23 @@
+﻿<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="Vechiles">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Vechile" maxOccurs="unbounded" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:string" name="Vin"/>
+							<xs:element type="xs:string" name="Brand"/>
+							<xs:element type="xs:string" name="Manufacturer"/>
+							<xs:element type="xs:string" name="Model"/>
+							<xs:element type="xs:string" name="LicensePlate"/>
+							<xs:element type="xs:string" name="BodyType"/>
+							<xs:element type="xs:string" name="Color"/>
+							<xs:element type="xs:string" name="TechCondition"/>
+							<xs:element type="xs:dateTime" name="RealeseDate"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

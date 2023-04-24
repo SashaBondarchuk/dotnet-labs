@@ -1,6 +1,6 @@
 ﻿using LAB2.interfaces;
 using System;
-using System.IO;
+
 
 namespace LAB2.commands
 {
@@ -14,8 +14,9 @@ namespace LAB2.commands
         public void Execute()
         {
             if (!dataHandler.DocumentIsInitialized())
-                throw new FileNotFoundException();
-
+            {
+                throw new Exception("Файл не ініціалізований даними за вказаною схемою");
+            }
             Console.WriteLine("Введіть номерний знак");
             Console.WriteLine(dataHandler.GetElementWithSelectedText(Console.ReadLine()) + "\n");
         }

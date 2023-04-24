@@ -2,7 +2,6 @@
 using LAB2.interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.IO;
 using System.Text;
 
 
@@ -19,14 +18,11 @@ namespace LAB2
             services.AddTransient<IDataHandler, DataHandler>();
 
             var container = services.BuildServiceProvider();
-
             IDataHandler dataHandler = container.GetService<IDataHandler>();
 
 
             Invoker invoker = new Invoker();
             invoker.SetUpCommand(new WriteDataToXml(dataHandler));
-            invoker.SetUpCommand(new GetFileContent(dataHandler));
-            invoker.SetUpCommand(new GetXmlFileNames(dataHandler));
             invoker.SetUpCommand(new GetVehicles(dataHandler));
             invoker.SetUpCommand(new GetSelectedDescendants(dataHandler));
             invoker.SetUpCommand(new GetBrandsAndSort(dataHandler));
@@ -46,6 +42,7 @@ namespace LAB2
             CommandMenu.GenerateMenu(invoker.GetCommands());
             CommandMenu.PrintMenu();
 
+            
             int commandCount = invoker.GetCommandsCount();
             while (true)
             {
@@ -61,17 +58,14 @@ namespace LAB2
                     Console.WriteLine($"Введіть число в межах від 1 до {commandCount}\n");
                     continue;
                 }
+
                 Console.WriteLine(invoker.GetCommandName(option - 1) + ":\n");
                 try
                 {
                     invoker.ExecuteCommand(option - 1);
                 }
-                catch (FileNotFoundException)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Файлу не існує");
-                }
-                catch (Exception ex) 
-                { 
                     Console.WriteLine(ex.Message);
                 }
             }
