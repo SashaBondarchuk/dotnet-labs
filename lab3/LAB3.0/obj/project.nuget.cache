@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "bD9DnmtnN16cIlYIbhZn6p5tdfY0kFhAbBeyz6zyuLeDzIPO66YWjKERyVJMpSqqBe4RRcliAyIrBu9+VFocaQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ASUS\\Desktop\\.net labs\\lab3\\LAB3.0\\LAB3.0\\LAB3.0.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0\\microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
+    "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
