@@ -1,6 +1,4 @@
-﻿using LAB4.helpers;
-
-namespace LAB4.commands
+﻿namespace LAB4.commands
 {
     public class EncryptAsymmetric : ICommand
     {
@@ -12,18 +10,14 @@ namespace LAB4.commands
 
         public void Execute()
         {
+            encryptionFacade.SetStrategy(new AsymmetricEncryptor());
             Console.WriteLine("Введіть публічний ключ");
             string userPublicKey = InputHelper.GetNotEmptyString();
 
             Console.WriteLine("Введіть дані, які треба зашифрувати");
             string dataToEncrypt = InputHelper.GetNotEmptyString();
-            string encrypted;
-            try
-            {
-                encrypted = encryptionFacade.EncryptTextAsymmetric(dataToEncrypt, userPublicKey);
-            }
-            catch (Exception) { throw; }
-            BinarySerializer.WriteIntoFile(encrypted);
+
+            string encrypted = encryptionFacade.Encrypt(dataToEncrypt, userPublicKey);
             Console.WriteLine($"Зашифровані дані:\n{encrypted}\n");
         }
 

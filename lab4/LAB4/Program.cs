@@ -7,10 +7,11 @@ namespace LAB4
         public static void Main(string[] args)
         {
             EncryptionFacade encryptionFacade = new();
+            KeyGenerationFacade keyGenerationFacade = new();
 
             Invoker invoker = new();
-            invoker.SetUpCommand(new GenerateAsymmetricKeys(encryptionFacade));
-            invoker.SetUpCommand(new GenerateSymmetricKey(encryptionFacade));
+            invoker.SetUpCommand(new GenerateAsymmetricKeys(keyGenerationFacade));
+            invoker.SetUpCommand(new GenerateSymmetricKey(keyGenerationFacade));
             invoker.SetUpCommand(new EncryptAsymmetric(encryptionFacade));
             invoker.SetUpCommand(new DecryptAsymmetric(encryptionFacade));
             invoker.SetUpCommand(new EncryptSymmetric(encryptionFacade));

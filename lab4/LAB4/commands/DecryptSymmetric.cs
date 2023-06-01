@@ -1,6 +1,4 @@
-﻿using LAB4.helpers;
-
-namespace LAB4.commands
+﻿namespace LAB4.commands
 {
     public class DecryptSymmetric : ICommand
     {
@@ -11,18 +9,14 @@ namespace LAB4.commands
         }
         public void Execute()
         {
+            encryptionFacade.SetStrategy(new SymmetricEncryptor());
             Console.WriteLine("Введіть ключ");
             string userKey = InputHelper.GetNotEmptyString();
 
-            Console.WriteLine("\nЗчитую інформацію з файлу...\n");
-            Thread.Sleep(1000);
-            string dataToDecrypt = BinaryParser.ReadFromFile();
-            string decrypted;
-            try
-            {
-                decrypted = encryptionFacade.DecryptText(dataToDecrypt, userKey);
-            }
-            catch (Exception) { throw; }
+            Console.WriteLine("Введіть дані для розшифровки");
+            string dataToDecrypt = InputHelper.GetNotEmptyString();
+
+            string decrypted = encryptionFacade.Decrypt(dataToDecrypt, userKey);
             Console.WriteLine("Розшифровані дані: " + decrypted + "\n");
         }
 

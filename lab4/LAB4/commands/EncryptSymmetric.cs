@@ -1,6 +1,4 @@
-﻿using LAB4.helpers;
-
-namespace LAB4.commands
+﻿namespace LAB4.commands
 {
     public class EncryptSymmetric : ICommand
     {
@@ -11,19 +9,14 @@ namespace LAB4.commands
         }
         public void Execute()
         {
+            encryptionFacade.SetStrategy(new SymmetricEncryptor());
             Console.WriteLine("Введіть ключ");
             string userKey = InputHelper.GetNotEmptyString();
 
             Console.WriteLine("Введіть дані, які треба зашифрувати");
             string dataToEncrypt = InputHelper.GetNotEmptyString();
-            string encrypted;
-            try
-            {
-                encrypted = encryptionFacade.EncryptText(dataToEncrypt, userKey);
-            }
-            catch (Exception) { throw; }
-            BinarySerializer.WriteIntoFile(encrypted);
 
+            string encrypted = encryptionFacade.Encrypt(dataToEncrypt, userKey);
             Console.WriteLine($"Зашифровані дані:\n{encrypted}\n");
         }
 

@@ -2,59 +2,23 @@
 {
     public class EncryptionFacade
     {
-        private readonly SymmetricEncryptor symmetricEncryptor;
-        private readonly AsymmetricEncryptor asymmetricEncryptor;
         private readonly HashGenerator hashGenerator;
+        private IEncryptionStrategy encryptionStrategy;
         public EncryptionFacade()
         {
-            symmetricEncryptor = new SymmetricEncryptor();
-            asymmetricEncryptor = new AsymmetricEncryptor();
             hashGenerator = new HashGenerator();
         }
-        public string GetPublicAsymmetricKey()
+        public void SetStrategy(IEncryptionStrategy strategy) 
         {
-            return asymmetricEncryptor.PublicKey;
+            encryptionStrategy = strategy;
         }
-        public string GetPrivateAsymmetricKey()
+        public string Encrypt(string dataToEncrypt, string symmetricKey)
         {
-            return asymmetricEncryptor.PrivateKey;
+            return encryptionStrategy.Encrypt(dataToEncrypt, symmetricKey);
         }
-        public byte[] GetSymmetricKey()
+        public string Decrypt(string dataToDecrypt, string symmetricKey)
         {
-            return symmetricEncryptor.Key;
-        }
-        public string EncryptText(string dataToEncrypt, string symmetricKey)
-        {
-            try
-            {
-                return symmetricEncryptor.Encrypt(dataToEncrypt, symmetricKey);
-            }
-            catch (Exception) { throw; }
-        }
-        public string DecryptText(string dataToDecrypt, string symmetricKey)
-        {
-            try
-            {
-                return symmetricEncryptor.Decrypt(dataToDecrypt, symmetricKey);
-            }
-            catch (Exception) { throw; }
-            
-        }
-        public string EncryptTextAsymmetric(string dataToEncrypt, string publicKey)
-        {
-            try
-            {
-                return asymmetricEncryptor.Encrypt(dataToEncrypt, publicKey);
-            }
-            catch (Exception) { throw; }
-        }
-        public string DecryptTextAsymmetric(string dataToDecrypt, string privateKey)
-        {
-            try
-            {
-                return asymmetricEncryptor.Decrypt(dataToDecrypt, privateKey);
-            }
-            catch (Exception) { throw; }
+            return encryptionStrategy.Decrypt(dataToDecrypt, symmetricKey);
         }
         public string GenerateHash(string data)
         {

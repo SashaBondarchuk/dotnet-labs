@@ -12,7 +12,6 @@ namespace LAB4
                 byte[] dataBytes = Encoding.UTF8.GetBytes(data);
                 byte[] hashBytes = sha256.ComputeHash(dataBytes);
                 string hash = BitConverter.ToString(hashBytes).Replace("-", "");
-
                 return hash;
             }
         }

@@ -1,6 +1,4 @@
-﻿using LAB4.helpers;
-
-namespace LAB4.commands
+﻿namespace LAB4.commands
 {
     public class DecryptAsymmetric : ICommand
     {
@@ -11,18 +9,14 @@ namespace LAB4.commands
         }
         public void Execute()
         {
+            encryptionFacade.SetStrategy(new AsymmetricEncryptor());
             Console.WriteLine("Введіть приватний ключ: ");
             string privateKey = InputHelper.GetNotEmptyString();
 
-            Console.WriteLine("\nЗчитую інформацію з файлу...\n");
-            Thread.Sleep(1000);
-            string decrypted;
-            string dataToDecrypt = BinaryParser.ReadFromFile();
-            try
-            {
-                decrypted = encryptionFacade.DecryptTextAsymmetric(dataToDecrypt, privateKey);
-            }
-            catch (Exception) { throw; }
+            Console.WriteLine("Введіть дані для розшифровки");
+            string dataToDecrypt = InputHelper.GetNotEmptyString();
+
+            string decrypted = encryptionFacade.Decrypt(dataToDecrypt, privateKey);
             Console.WriteLine("Розшифровані дані: " + decrypted + "\n");   
         }
 
