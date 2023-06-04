@@ -2,22 +2,24 @@
 {
     public class KeyGenerationFacade
     {
-        private readonly KeyGenerator keyGenerator;
+        private readonly SymmetricKeyGenerator symmetricKeyGenerator;
+        private readonly AsymmetricKeyGenerator asymmetricKeyGenerator;
         public KeyGenerationFacade()
         {
-            keyGenerator = new KeyGenerator();
+            symmetricKeyGenerator = new SymmetricKeyGenerator();
+            asymmetricKeyGenerator = new AsymmetricKeyGenerator();
         }
         public string GetPublicAsymmetricKey()
         {
-            return keyGenerator.PublicKey;
+            return asymmetricKeyGenerator.PublicKey;
         }
         public string GetPrivateAsymmetricKey()
         {
-            return keyGenerator.PrivateKey;
+            return asymmetricKeyGenerator.PrivateKey;
         }
         public byte[] GetSymmetricKey()
         {
-            return keyGenerator.SymmetricKey;
+            return symmetricKeyGenerator.GenerateKey();
         }
     }
 }

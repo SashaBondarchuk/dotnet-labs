@@ -51,7 +51,6 @@ namespace LAB4
             Array.Copy(combinedBytes, iv.Length, encryptedBytes, 0, encryptedBytes.Length);
 
             string decrypted;
-
             using (Aes aes = Aes.Create())
             {
                 aes.Key = key;

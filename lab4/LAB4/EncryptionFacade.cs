@@ -12,17 +12,17 @@
         {
             encryptionStrategy = strategy;
         }
-        public string Encrypt(string dataToEncrypt, string symmetricKey)
+        public string Encrypt(string dataToEncrypt, string key)
         {
-            return encryptionStrategy.Encrypt(dataToEncrypt, symmetricKey);
+            return encryptionStrategy.Encrypt(dataToEncrypt, key);
         }
-        public string Decrypt(string dataToDecrypt, string symmetricKey)
+        public string Decrypt(string dataToDecrypt, string key)
         {
-            return encryptionStrategy.Decrypt(dataToDecrypt, symmetricKey);
+            return encryptionStrategy.Decrypt(dataToDecrypt, key);
         }
-        public string GenerateHash(string data)
+        public string GenerateHash(string dataToHash)
         {
-            return hashGenerator.GenerateHash(data);
+            return hashGenerator.GenerateHash(dataToHash);
         }
     }
 }

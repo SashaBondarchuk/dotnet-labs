@@ -45,7 +45,15 @@ namespace LAB4
                 Console.WriteLine("Невірний формат даних, " + ex.Message);
                 throw;
             }
-            decryptedBytes = rsa.Decrypt(toDecrypt, true);
+            try
+            {
+                decryptedBytes = rsa.Decrypt(toDecrypt, true);
+            }
+            catch (CryptographicException ex)
+            {
+                Console.WriteLine("Невірний ключ, " + ex.Message);
+                throw;
+            }
             string decryptedData = Encoding.UTF8.GetString(decryptedBytes);
             return decryptedData;
         }
