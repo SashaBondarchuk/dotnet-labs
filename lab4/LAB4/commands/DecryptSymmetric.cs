@@ -9,7 +9,7 @@
         }
         public void Execute()
         {
-            encryptionFacade.SetStrategy(new SymmetricEncryptor());
+            encryptionFacade.SetStrategy(EncyptionType.Symmetric);
             Console.WriteLine("Введіть ключ");
             string userKey = InputHelper.GetNotEmptyString();
 

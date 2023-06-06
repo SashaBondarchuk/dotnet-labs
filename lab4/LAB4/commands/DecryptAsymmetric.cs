@@ -9,7 +9,7 @@
         }
         public void Execute()
         {
-            encryptionFacade.SetStrategy(new AsymmetricEncryptor());
+            encryptionFacade.SetStrategy(EncyptionType.Asymmetric);
             Console.WriteLine("Введіть приватний ключ: ");
             string privateKey = InputHelper.GetNotEmptyString();
 

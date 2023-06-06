@@ -10,7 +10,7 @@
 
         public void Execute()
         {
-            encryptionFacade.SetStrategy(new AsymmetricEncryptor());
+            encryptionFacade.SetStrategy(EncyptionType.Asymmetric);
             Console.WriteLine("Введіть публічний ключ");
             string userPublicKey = InputHelper.GetNotEmptyString();
 

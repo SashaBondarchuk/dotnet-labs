@@ -8,9 +8,19 @@
         {
             hashGenerator = new HashGenerator();
         }
-        public void SetStrategy(IEncryptionStrategy strategy) 
+        public void SetStrategy(EncyptionType encyptionType) 
         {
-            encryptionStrategy = strategy;
+            switch (encyptionType)
+            {
+                case EncyptionType.Asymmetric:
+                    encryptionStrategy = new AsymmetricEncryptor();
+                    break;
+                case EncyptionType.Symmetric:
+                    encryptionStrategy = new SymmetricEncryptor();
+                    break;
+                default:
+                    break;
+            }
         }
         public string Encrypt(string dataToEncrypt, string key)
         {

@@ -18,8 +18,8 @@ namespace LAB4
                 using ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
                 using MemoryStream msEncrypt = new();
                 using CryptoStream csEncrypt = new(msEncrypt, encryptor, CryptoStreamMode.Write);
-                byte[] plaintextBytes = Encoding.UTF8.GetBytes(dataToEncrypt);
-                csEncrypt.Write(plaintextBytes, 0, plaintextBytes.Length);
+                byte[] bytesToEncrypt = Encoding.UTF8.GetBytes(dataToEncrypt);
+                csEncrypt.Write(bytesToEncrypt, 0, bytesToEncrypt.Length);
                 csEncrypt.FlushFinalBlock();
                 encryptedBytes = msEncrypt.ToArray();
             }
