@@ -41,8 +41,7 @@ namespace LAB4
             }
             catch (FormatException ex)
             {
-                Console.WriteLine("Невірний формат даних, " + ex.Message);
-                throw;
+                throw new FormatException("Невірний формат даних", ex);
             }
 
             byte[] iv = new byte[16];
@@ -65,8 +64,7 @@ namespace LAB4
                 }
                 catch (CryptographicException ex)
                 {
-                    Console.WriteLine("Невірний ключ, " + ex.Message);
-                    throw;
+                    throw new CryptographicException("Невірний ключ", ex);
                 }
             }
             return decrypted;
@@ -79,8 +77,7 @@ namespace LAB4
             }
             catch (FormatException ex)
             {
-                Console.WriteLine("Невірний формат ключа, " + ex.Message);
-                throw;
+                throw new FormatException("Невірний формат ключа", ex);
             }
         }
     }

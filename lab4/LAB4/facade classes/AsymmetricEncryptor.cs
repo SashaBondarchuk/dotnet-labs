@@ -15,8 +15,7 @@ namespace LAB4
             }
             catch (CryptographicException ex)
             {
-                Console.WriteLine("Не вдалось зчитати ключ, " + ex.Message);
-                throw;
+                throw new CryptographicException("Не вдалось зчитати ключ", ex);
             }
             byte[] encryptedBytes = rsa.Encrypt(dataToEncryptBytes, true);
             string encrypted = Convert.ToBase64String(encryptedBytes);
@@ -33,8 +32,7 @@ namespace LAB4
             }
             catch (CryptographicException ex)
             {
-                Console.WriteLine("Не вдалось зчитати ключ, " + ex.Message);
-                throw;
+                throw new CryptographicException("Не вдалось зчитати ключ", ex);
             }
             try
             {
@@ -42,8 +40,7 @@ namespace LAB4
             }
             catch (FormatException ex)
             {
-                Console.WriteLine("Невірний формат даних, " + ex.Message);
-                throw;
+                throw new FormatException("Невірний формат даних", ex);
             }
             try
             {
@@ -51,8 +48,7 @@ namespace LAB4
             }
             catch (CryptographicException ex)
             {
-                Console.WriteLine("Невірний ключ, " + ex.Message);
-                throw;
+                throw new CryptographicException("Невірний ключ", ex);
             }
             string decryptedData = Encoding.UTF8.GetString(decryptedBytes);
             return decryptedData;

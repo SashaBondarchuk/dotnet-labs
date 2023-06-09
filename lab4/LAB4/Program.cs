@@ -36,9 +36,9 @@ namespace LAB4
                 {
                     invoker.ExecuteCommand(option - 1);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Спробуйте ще раз\n");
+                    Console.WriteLine(ex.Message + "\nСпробуйте ще раз\n");
                 }
             }
         }
